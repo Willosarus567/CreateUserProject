@@ -1,6 +1,4 @@
-![Build Status](https://ci.appveyor.com/api/projects/status/github/j-graham/trainingschedulerstarter?svg=true)
-
-# TrainingScheduler
+# ToDoApp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.4.
 
