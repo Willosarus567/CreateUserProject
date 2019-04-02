@@ -22,17 +22,22 @@ module.exports = (sequelize, DataTypes) => {
           isNumeric: { msg: 'Not a valid phone number.' },
         },
       },
+      userRoleId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
       aboutMe: DataTypes.STRING,
       password: DataTypes.STRING,
     },
-    {
-      classMethods: {
-        associate: function(models) {
-          // associations can be defined here
-        },
-      },
-    },
+    {},
   );
+  Users.associate = function (models) {
+    models.Users.belongsTo(models.UserRoles, {
+      foreignKey: 'userRoleId',
+      sourceKey: 'id',
+    });
+  };
+
   Users.beforeSave(async (user) => {
     let err;
     if (user.changed('password')) {
@@ -47,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 
-  Users.prototype.comparePassword = async function(pw) {
+  Users.prototype.comparePassword = async function (pw) {
     let err, pass;
     if (!this.password) TE('password not set');
 
@@ -59,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
     return this;
   };
 
-  Users.prototype.getJWT = function() {
+  Users.prototype.getJWT = function () {
     let expiration_time = parseInt(CONFIG.jwt_expiration);
     return (
       'Bearer ' +
